@@ -1,6 +1,6 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import User from "../models/userModel.js";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import User from '../models/userModel.js';
 
 // @desc    Get all users
 // @route   GET /api/v1/users
@@ -19,14 +19,14 @@ export const getUsers = async (req, res, next) => {
 
 // @desc    Get single user
 // @route   GET /api/v1/users/:id
-// @access  Public
+// @access  Private/Admin
 export const getUserById = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found",
+        message: 'User not found',
       });
     }
     res.status(200).json({
@@ -40,7 +40,7 @@ export const getUserById = async (req, res, next) => {
 
 // @desc    Update user
 // @route   PUT /api/v1/users/:id
-// @access  Public
+// @access  Private/Admin
 export const updateUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -51,7 +51,7 @@ export const updateUser = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found",
+        message: 'User not found',
       });
     }
 
@@ -66,7 +66,7 @@ export const updateUser = async (req, res, next) => {
 
 // @desc    Delete user
 // @route   DELETE /api/v1/users/:id
-// @access  Public
+// @access  Private/Admin
 export const deleteUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -74,7 +74,7 @@ export const deleteUser = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found",
+        message: 'User not found',
       });
     }
 
@@ -99,7 +99,7 @@ export const loginUser = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found",
+        message: 'User not found',
       });
     }
 
@@ -108,16 +108,18 @@ export const loginUser = async (req, res, next) => {
     if (!validPassword) {
       return res.status(400).json({
         success: false,
-        message: "Invalid password",
+        message: 'Invalid password',
       });
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.TOKEN_SECRET,
+      { expiresIn: '8h' }
+    );
 
     res.status(200).json({
-      message: "Login successful",
+      message: 'Login successful',
       token,
       user: {
         id: user._id,
@@ -142,7 +144,7 @@ export const registerUser = async (req, res, next) => {
     if (userExists) {
       return res.status(400).json({
         success: false,
-        message: "User already exists",
+        message: 'User already exists',
       });
     }
 
@@ -155,18 +157,26 @@ export const registerUser = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
-      expiresIn: "24h",
-    });
-
     res.status(201).json({
-      message: "User created",
-      token,
+      message: 'User created',
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Logout user
+// @route   POST /api/v1/users/logout
+// @access  Private
+export const logoutUser = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      message: 'Logout successful',
     });
   } catch (error) {
     next(error);

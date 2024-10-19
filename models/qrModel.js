@@ -1,25 +1,25 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const qrSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   type: {
     type: String,
-    required: true
+    required: true,
   },
   data: {
     type: String,
-    required: true
+    required: true,
   },
   statistics: {
     type: Object,
     default: {
       totalScans: 0,
       uniqueScans: 0,
-    }
-  }
+    },
+  },
 });
 
-const QR = mongoose.model("QR", qrSchema);
+const QR = mongoose.model('QR', qrSchema);

@@ -104,7 +104,7 @@ const swaggerComponents = {
         },
         email: {
           type: 'string',
-          example: 'john@example.com',
+          example: 'johndoe@example.com',
         },
         password: {
           type: 'string',
