@@ -13,12 +13,28 @@ const swaggerDefinition = {
       url: 'http://localhost:5000',
     },
   ],
-  components: swaggerComponents,
+  components: {
+    ...swaggerComponents, // Diğer bileşenlerinizi burada tutabilirsiniz
+    securitySchemes: {
+      BearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT', // Opsiyonel, ama JWT kullanıldığını belirtir
+        description:
+          'Enter JWT token in the format: Bearer <token>',
+      },
+    },
+  },
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
 };
 
 const options = {
   swaggerDefinition,
-  apis: ['./routes/*.js'],
+  apis: ['./routes/*.js'], // API endpoint'lerinize ait dosyalar
 };
 
 const swaggerSpec = swaggerJSDoc(options);
