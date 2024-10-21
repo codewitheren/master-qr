@@ -112,11 +112,9 @@ export const loginUser = async (req, res, next) => {
       });
     }
 
-    const token = jwt.sign(
-      { userId: user.id },
-      process.env.TOKEN_SECRET,
-      { expiresIn: '8h' }
-    );
+    const token = jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET, {
+      expiresIn: '8h',
+    });
 
     res.status(200).json({
       message: 'Login successful',
@@ -164,19 +162,6 @@ export const registerUser = async (req, res, next) => {
         name: user.name,
         email: user.email,
       },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Logout user
-// @route   POST /api/v1/users/logout
-// @access  Private
-export const logoutUser = async (req, res, next) => {
-  try {
-    res.status(200).json({
-      message: 'Logout successful',
     });
   } catch (error) {
     next(error);

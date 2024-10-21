@@ -5,11 +5,25 @@ import { verifyToken, checkUserRole } from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
 router.get('/', verifyToken, checkUserRole('admin'), userController.getUsers);
-router.get('/:id', verifyToken, checkUserRole('admin'), userController.getUserById);
-router.put('/:id', verifyToken, checkUserRole('admin'), userController.updateUser);
-router.delete('/:id', verifyToken, checkUserRole('admin'), userController.deleteUser);
+router.get(
+  '/:id',
+  verifyToken,
+  checkUserRole('admin'),
+  userController.getUserById
+);
+router.put(
+  '/:id',
+  verifyToken,
+  checkUserRole('admin'),
+  userController.updateUser
+);
+router.delete(
+  '/:id',
+  verifyToken,
+  checkUserRole('admin'),
+  userController.deleteUser
+);
 router.post('/login', userController.loginUser);
 router.post('/register', userController.registerUser);
-router.post('/logout', userController.logoutUser);
 
 export default router;

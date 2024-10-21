@@ -31,17 +31,15 @@ const swaggerComponents = {
           example: 'URL',
         },
         data: {
-          type: 'string',
-          example: 'https://example.com',
+          type: 'object',
+          example: {
+            url: 'https://example.com',
+          },
         },
         statistics: {
           type: 'object',
           properties: {
-            totalScans: {
-              type: 'number',
-              example: 0,
-            },
-            uniqueScans: {
+            scans: {
               type: 'number',
               example: 0,
             },

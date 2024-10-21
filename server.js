@@ -9,6 +9,7 @@ import swaggerSpec from './config/swagger.js';
 import connectDB from './config/db.js';
 
 import userRoutes from './routes/userRoutes.js';
+import qrRoutes from './routes/qrRoutes.js';
 
 import { errorHandler } from './middlewares/errorHandler.js';
 
@@ -19,11 +20,14 @@ const app = express();
 connectDB().then(() => {
   // Middleware
   app.use(express.json());
-  app.use(morgan('dev'));
+  app.use(
+    morgan(':method :url :status :res[content-length] - :response-time ms')
+  );
 
   // Routes
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   app.use('/api/v1/users', userRoutes);
+  app.use('/api/v1/qrs', qrRoutes);
 
   // Error handler
   app.use(errorHandler);
